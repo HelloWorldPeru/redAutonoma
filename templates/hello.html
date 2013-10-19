@@ -1,0 +1,10 @@
+{% extends "template.html" %}
+
+{% block content %}
+        <h1>Sales Data</h1>
+        <br />
+        {% for item in sales %}
+            {{ item.rep_name }} {{ item.amount }} |
+        {% endfor %}
+
+{% endblock %}
