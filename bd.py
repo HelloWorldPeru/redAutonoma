@@ -9,6 +9,15 @@ con = lite.connect('red.db')
 with con:
     cur = con.cursor()
 
+    cur.execute("DROP TABLE IF EXISTS criterio")
+    cur.execute("CREATE TABLE criterio("
+                "id integer primary key autoincrement,"
+                "nombre TEXT"
+                ")")
+    cur.execute("INSERT INTO criterios (nombre) VALUES('Felicidad')")
+    cur.execute("INSERT INTO criterios (nombre) VALUES('Descanso')")
+    cur.execute("INSERT INTO criterios (nombre) VALUES('Item')")
+    cur.execute("INSERT INTO criterios (nombre) VALUES('Otro item')")
 
     cur.execute("DROP TABLE IF EXISTS carrera")
     cur.execute("CREATE TABLE carrera("
@@ -60,5 +69,16 @@ with con:
                 ")")
 
     cur.execute("INSERT INTO usuario (username, password, token, carrera, turno, ciclo) VALUES('jonathancg90','123456','13233',1,1,6)")
+
+    cur.execute("DROP TABLE IF EXISTS evaluacion")
+    cur.execute("CREATE TABLE criterios("
+                "id integer primary key autoincrement,"
+                "fecha TEXT,"
+                "curso INT,"
+                "criterio INTEGER,"
+                "valor INT,"
+                "FOREIGN KEY(criterio) REFERENCES criterio(id),"
+                "FOREIGN KEY(curso) REFERENCES curso(id)"
+                ")")
 
     # cur.executemany("INSERT INTO usuario(username, password, token, carrera, turno, ciclo) VALUES(?,?,?,?,?,?)", usuarios)

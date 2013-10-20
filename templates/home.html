@@ -1,5 +1,44 @@
 {% extends "template.html" %}
 
 {% block content %}
-        <h1>Hello World</h1>
+    <h1>Hello World</h1>
+    <a href="" id="logIn">Login</a>
+        <div class="content-logIn">
+            <input type="text" id='username'>
+            <input type="password" id="password">
+            <div class="message">
+
+            </div>
+        </div>
+    <div class="Information" hidden>
+        <a  href="" id="Profile">Profile</a><input type="hidden" value="" id="token"/>
+            <div class="content-Profile">
+                <ul></ul>
+            </div>
+        <a  href="" id="Carreras">Carreras</a>
+            <div class="content-Carreras">
+                <select></select>
+            </div>
+        <a  href="" id="Turnos">Turnos</a>
+            <div class="content-Turnos">
+                <select></select>
+            </div>
+        <a  href="" id="Cursos">Completa datos</a>
+            <div class="content-Cursos">
+                Ciclo: <select id="ciclo">
+                        <option value=1>1</option>
+                        <option value=2>2</option>
+                        <option value=3>3</option>
+                        <option value=4>4</option>
+                        <option value=5>5</option>
+                        <option value=6>6</option>
+                        </select>
+            </div>
+        <button id="Update">Completar datos</button>
+        <br/>
+        <a  href="" id="Saber">Saber que tengo</a>
+            <div class="content-Saber">
+
+            </div>
+    </div>
 {% endblock %}

@@ -49,13 +49,22 @@ def log():
 
 #APP Phonegap
 
-@app.route('/perfil/<int:user_id>')
-def get_current_user(user_id):
+@app.route('/login-ajax', methods=['POST'])
+def login_ajax():
+    error = None
+    result = {}
+    if request.method == 'POST':
+        result = rs.check_login(request.form['username'], request.form['password'] )
+    return json.dumps(result)
+
+
+@app.route('/perfil/<int:user_token>')
+def get_current_user(user_token):
     try:
-        if user_id is not None:
+        if user_token is not None:
             data = {}
             cn.g.db = cn.connect_db()
-            cur = cn.g.db.execute('select id, username, carrera, turno, ciclo from usuario where id='+str(user_id))
+            cur = cn.g.db.execute('select id, username, carrera, turno, ciclo from usuario where token='+str(user_token))
             usuario = [dict(id=row[0], nombre=row[1], carrera=row[2], turno=row[3], ciclo=row[4])for row in cur.fetchall()]
             for user in usuario:
                 data.update({

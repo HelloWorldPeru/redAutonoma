@@ -23,6 +23,121 @@
     {% endblock %}
     </div>
     <script src="http://code.jquery.com/jquery.js"></script>
+    <script>
+        $(document).on('ready', function(){
+            iniciar();
+        });
+        function iniciar() {
+        //Globales
+        var domain = 'http://127.0.0.1:5000/';
+
+
+        //Elementos disparadoresd e evento
+        var login = $('#logIn'),
+            profile = $('#Profile'),
+            carreras = $('#Carreras'),
+            turno = $('#Turnos'),
+            cursos = $('#Cursos'),
+            saler = $('#Saber');
+        //Elementos contenedores
+        var contentLogin = $('.content-logIn'),
+            contentProfile = $('.content-Profile'),
+            contentCarreras = $('.content-Carreras'),
+            contentTurno = $('.content-Turnos'),
+            contentCursos = $('.content-Cursos'),
+            contentSaber = $('.content-Saber');
+
+
+        //Eventos
+        login.on('click',function(e){
+            e.preventDefault();
+            var data = {
+                'username':$('#username').val(),
+                'password':$('#password').val()
+            };
+            var url =  domain +'login-ajax';
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                data: data,
+                url: url,
+                success: function(data){
+                    if(data.status==false){
+                        $('.message').append(data.message);
+                    }
+                    else{
+                        $('.message').append(data.message);
+                        $('#token').val(data.token);
+                        $('.Information').show();
+                    }
+                }
+            });
+        });
+
+
+        profile.on('click',function(e){
+            var id = $('#token').val();
+            if(id != ''){
+                e.preventDefault();
+                var url =  domain +'perfil/'+id;
+                $.ajax({
+                    dataType: "json",
+                    type: "GET",
+                    url: url,
+
+                    success: function(data){
+                        contentProfile.children('ul').html('');
+                        contentProfile.children('ul').append('<li>Carrera: ID:'+data.carrera.id+' | Nombre: '+data.carrera.nombre+'</li>');
+                        contentProfile.children('ul').append('<li>Ciclo: '+data.ciclo+'</li>');
+                        contentProfile.children('ul').append('<li>Turno: ID:'+data.turno.id+' | Nombre: '+data.turno.nombre+'</li>');
+                        contentProfile.children('ul').append('<li>'+data.username+'</li>');
+                        //$.mobile.changePage("otherPage.html");
+                    }
+                });
+            } else{
+                contentProfile.children('ul').html('Usuario no valido');
+            }
+        });
+
+        turno.on('click',function(e){
+            e.preventDefault();
+            var url =  domain +'turno';
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: url,
+                success: function(data){
+                    $.each(data, function(id, value){
+                        contentTurno.children('select').html('');
+                        contentTurno.children('select').append('<option value='+value.id+'>'+value.nombre+'</option>');
+                    });
+                    //$.mobile.changePage("otherPage.html");
+                }
+            });
+        });
+
+        carreras.on('click',function(e){
+            e.preventDefault();
+            var url =  domain +'carrera';
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: url,
+                success: function(data){
+                    $.each(data, function(id, value){
+                        contentCarreras.children('select').html('');
+                        contentCarreras.children('select').append('<option value='+value.id+'>'+value.nombre+'</option>');
+                    });
+                    //$.mobile.changePage("otherPage.html");
+                }
+            });
+        });
+
+
+
+    }
+
+    </script>
     <script src="/static/js/bootstrap.min.js"></script>
   </body>
 </html>
