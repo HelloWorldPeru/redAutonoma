@@ -1,16 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, g, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, json
+import connection as cn
+import resolve as rs
 from functools import wraps
-import sqlite3
 
-DATABASE = 'red.db'
+app = cn.app
 
-app = Flask(__name__)
-app.config.from_object(__name__)
-app.secret_key = 'mi preciosa'
-
-
-def connect_db():
-    return sqlite3.connect(app.config['DATABASE'])
+#WebPage
 
 @app.route('/')
 def home():
@@ -29,10 +24,10 @@ def login_required(test):
 @app.route('/hello')
 @login_required
 def hello():
-    g.db = connect_db()
-    cur = g.db.execute('select nombre from carrera')
+    cn.g.db = cn.connect_db()
+    cur = cn.g.db.execute('select nombre from carrera')
     carreras = [dict(nombre=row[0])for row in cur.fetchall()]
-    g.db.close()
+    cn.g.db.close()
     return render_template('hello.html', carreras=carreras)
 
 @app.route('/logout')
@@ -52,31 +47,55 @@ def log():
             return redirect(url_for('hello'))
     return render_template('login.html', error=error)
 
-@app.route('/perfil')
-def get_current_user():
-    g.db = connect_db()
-    cur = g.db.execute('select id, username, carrera, turno, ciclo from usuario')
-    usuario = [dict(id=row[0], nombre=row[1], carrera=row[2], turno=row[3], ciclo=row[4])for row in cur.fetchall()]
-    g.db.close()
-    return jsonify(username=usuario[0].get('nombre', None),
-                   carrera=usuario[0].get('carrera', None),
-                   turno=usuario[0].get('turno', None),
-                   ciclo=usuario[0].get('ciclo', None)
-                   )
+#APP Phonegap
+
+@app.route('/perfil/<int:user_id>')
+def get_current_user(user_id):
+    try:
+        if user_id is not None:
+            data = {}
+            cn.g.db = cn.connect_db()
+            cur = cn.g.db.execute('select id, username, carrera, turno, ciclo from usuario where id='+str(user_id))
+            usuario = [dict(id=row[0], nombre=row[1], carrera=row[2], turno=row[3], ciclo=row[4])for row in cur.fetchall()]
+            for user in usuario:
+                data.update({
+                    'id':user.get('id'),
+                    'username':user.get('nombre'),
+                    'carrera':rs.get_carrera(user.get('carrera')),
+                    'turno':rs.get_turno(user.get('turno')),
+                    'ciclo':user.get('ciclo')
+                })
+
+            cn.g.db.close()
+            return json.dumps(data)
+        else:
+            return jsonify(message='Error query')
+    except:
+        return jsonify(message='Error query')
 
 
 @app.route('/carrera')
 def get_current_carreras():
-    return jsonify(username='jo',
-                   email='aa',
-                   id='1')
+    try:
+        cn.g.db = cn.connect_db()
+        cur = cn.g.db.execute('select id, nombre from carrera')
+        carreras = [dict(id=row[0], nombre=row[1])for row in cur.fetchall()]
+        cn.g.db.close()
+        return json.dumps(carreras)
+    except:
+        return jsonify(message='Error query')
 
 
 @app.route('/turno')
 def get_current_turno():
-    return jsonify(username='jo',
-                   email='aa',
-                   id='1')
+    try:
+        cn.g.db = cn.connect_db()
+        cur = cn.g.db.execute('select id, nombre from turno')
+        carreras = [dict(id=row[0], nombre=row[1])for row in cur.fetchall()]
+        cn.g.db.close()
+        return json.dumps(carreras)
+    except:
+        return jsonify(message='Error query')
 
 
 @app.route('/profesor')

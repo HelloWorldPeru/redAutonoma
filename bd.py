@@ -31,7 +31,7 @@ with con:
                 "id integer primary key autoincrement,"
                 "nombre TEXT"
                 ")")
-    cur.execute("INSERT INTO profesor (nombre) VALUES('Tectima')")
+    cur.execute("INSERT INTO profesor (nombre) VALUES('Tectime')")
 
     cur.execute("DROP TABLE IF EXISTS curso")
     cur.execute("CREATE TABLE curso("
