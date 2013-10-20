@@ -29,7 +29,7 @@
         });
         function iniciar() {
         //Globales
-        var domain = 'http://redau.herokuapp.com/';
+        var domain = 'http://127.0.0.1:5000/';
 
 
         //Elementos disparadoresd e evento
@@ -37,14 +37,14 @@
             profile = $('#Profile'),
             carreras = $('#Carreras'),
             turno = $('#Turnos'),
-            cursos = $('#Cursos'),
+            actualizar = $('#Cursos'),
             saler = $('#Saber');
         //Elementos contenedores
         var contentLogin = $('.content-logIn'),
             contentProfile = $('.content-Profile'),
             contentCarreras = $('.content-Carreras'),
             contentTurno = $('.content-Turnos'),
-            contentCursos = $('.content-Cursos'),
+            contentactualizar = $('.content-Cursos'),
             contentSaber = $('.content-Saber');
 
 
@@ -107,8 +107,8 @@
                 type: "GET",
                 url: url,
                 success: function(data){
+                    contentTurno.children('select').html('');
                     $.each(data, function(id, value){
-                        contentTurno.children('select').html('');
                         contentTurno.children('select').append('<option value='+value.id+'>'+value.nombre+'</option>');
                     });
                     //$.mobile.changePage("otherPage.html");
@@ -124,11 +124,31 @@
                 type: "GET",
                 url: url,
                 success: function(data){
+                    contentCarreras.children('select').html('');
                     $.each(data, function(id, value){
-                        contentCarreras.children('select').html('');
                         contentCarreras.children('select').append('<option value='+value.id+'>'+value.nombre+'</option>');
                     });
                     //$.mobile.changePage("otherPage.html");
+                }
+            });
+        });
+        actualizar.on('click',function(e){
+            e.preventDefault();
+            var token = $('#token').val();
+            var data = {
+                    'carrera':$("#ch-carrera").val(),
+                    'turno':$("#ch-turnos").val(),
+                    'ciclo':$('#ch-ciclo').val(),
+                    'token':token
+                };
+            var url =  domain +'actualizar';
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: url,
+                data:data,
+                success: function(data){
+                    console.log(data.status);
                 }
             });
         });

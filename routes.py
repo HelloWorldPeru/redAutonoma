@@ -57,6 +57,19 @@ def login_ajax():
         result = rs.check_login(request.form['username'], request.form['password'] )
     return json.dumps(result)
 
+@app.route('/actualizar', methods=['POST'])
+def update_information():
+    error = None
+    result = {}
+    if request.method == 'POST':
+        try:
+            cn.g.db = cn.connect_db()
+            cn.g.db.execute("update usuario set carrera="+str(request.form['carrera'])+",turno="+str(request.form['turno'])+",ciclo="+str(request.form['ciclo'])+" where token='"+str(request.form['token'])+"'")
+            cn.g.db.commit()
+            result = {'status':True}
+        except:
+            result = {'status':False}
+    return json.dumps(result)
 
 @app.route('/perfil/<int:user_token>')
 def get_current_user(user_token):
@@ -107,11 +120,29 @@ def get_current_turno():
         return jsonify(message='Error query')
 
 
-@app.route('/profesor')
-def get_current_profesor():
-    return jsonify(username='jo',
-                   email='aa',
-                   id='1')
+@app.route('/curso/<int:user_token>')
+def get_curso(user_token):
+    try:
+        if user_token is not None:
+            data = {}
+            cn.g.db = cn.connect_db()
+            cur = cn.g.db.execute('select id, nombre from curso where carrera=?, turno=?, ciclo=?, dia=?')
+            usuario = [dict(id=row[0], nombre=row[1], carrera=row[2], turno=row[3], ciclo=row[4])for row in cur.fetchall()]
+            for user in usuario:
+                data.update({
+                    'id':user.get('id'),
+                    'username':user.get('nombre'),
+                    'carrera':rs.get_carrera(user.get('carrera')),
+                    'turno':rs.get_turno(user.get('turno')),
+                    'ciclo':user.get('ciclo')
+                })
+
+            cn.g.db.close()
+            return json.dumps(data)
+        else:
+            return jsonify(message='Error query')
+    except:
+        return jsonify(message='Error query')
 
 if __name__ == "__main__":
     app.run(debug=True)
