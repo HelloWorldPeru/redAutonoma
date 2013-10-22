@@ -29,7 +29,7 @@
         });
         function iniciar() {
         //Globales
-        var domain = 'http://redau.herokuapp.com/';
+        var domain = 'http://0.0.0.0:5000/';
 
         //Elementos disparadoresd e evento
         var login = $('#logIn'),
@@ -111,7 +111,6 @@
                     $.each(data, function(id, value){
                         contentTurno.children('select').append('<option value='+value.id+'>'+value.nombre+'</option>');
                     });
-                    //$.mobile.changePage("otherPage.html");
                 }
             });
         }
@@ -200,7 +199,7 @@
             var data = {
                     'token':token,
                     'curso':curso,
-                    'califica':calificaciones
+                    'califica':JSON.stringify(calificaciones)
                 };
             var url =  domain +'califica';
             $.ajax({

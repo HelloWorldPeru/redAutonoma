@@ -113,9 +113,26 @@ def calificar_curso():
         if request.method == 'POST':
             user_token = request.form['token']
             curso = request.form['curso']
-            calificaciones = request.form['califica']
+            calificaciones =  json.loads( request.form['califica'])
+            fecha = datetime.datetime.today().strftime('%d/%m/%Y')
+            profile = rs.get_profile(user_token)
+
             if user_token is not None:
-                data = {}
+                option = 'UPDATE'
+                evaluation = rs.get_evaluation(fecha,curso)
+                if evaluation is None:
+                    rs.save_evaluation(fecha,curso)
+                    evaluation = rs.get_evaluation(fecha,curso)
+
+                calificacion = rs.get_calificacion(profile.get('id'),evaluation)
+                if calificacion is None:
+                    option = 'SAVE'
+
+                for calificacion in calificaciones:
+                    rs.save_calificacion(option, profile.get('id'),evaluation, calificacion.get('id'),calificacion.get('valor'))
+                data = {
+                    'status':200
+                }
                 return json.dumps(data)
             else:
                 return jsonify(message='Error query')
