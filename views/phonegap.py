@@ -111,7 +111,6 @@ def get_criterios():
 def calificar_curso():
     try:
         if request.method == 'POST':
-            import pdb;pdb.set_trace()
             user_token = request.form['token']
             curso = request.form['curso']
             calificaciones = request.form['califica']
