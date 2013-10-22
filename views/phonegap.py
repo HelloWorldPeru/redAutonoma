@@ -4,6 +4,7 @@ import connection as cn
 import resolve as rs
 
 
+@crossdomain(origin='*')
 def login_ajax():
     error = None
     result = {}
