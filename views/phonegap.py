@@ -58,6 +58,7 @@ def login_ajax():
     return json.dumps(result)
 
 
+@crossdomain(origin='*')
 def update_information():
     error = None
     result = {}
@@ -72,6 +73,7 @@ def update_information():
     return json.dumps(result)
 
 
+@crossdomain(origin='*')
 def get_current_user():
     if request.method == 'POST':
         try:
@@ -99,6 +101,7 @@ def get_current_user():
             return jsonify(message='Error query')
 
 
+@crossdomain(origin='*')
 def get_current_carreras():
     try:
         cn.g.db = cn.connect_db()
@@ -110,6 +113,7 @@ def get_current_carreras():
         return jsonify(message='Error query')
 
 
+@crossdomain(origin='*')
 def get_current_turno():
     try:
         cn.g.db = cn.connect_db()
@@ -121,6 +125,7 @@ def get_current_turno():
         return jsonify(message='Error query')
 
 
+@crossdomain(origin='*')
 def get_curso():
     try:
         if request.method == 'POST':
@@ -146,6 +151,7 @@ def get_curso():
         return jsonify(message='Error query')
 
 
+@crossdomain(origin='*')
 def get_criterios():
     cn.g.db = cn.connect_db()
     cur = cn.g.db.execute('select id, nombre from criterios')
@@ -154,6 +160,7 @@ def get_criterios():
     return json.dumps(criterios)
 
 
+@crossdomain(origin='*')
 def calificar_curso():
     try:
         if request.method == 'POST':
