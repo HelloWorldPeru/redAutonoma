@@ -98,3 +98,27 @@ def get_curso():
                 return jsonify(message='Error query')
     except:
         return jsonify(message='Error query')
+
+
+def get_criterios():
+    cn.g.db = cn.connect_db()
+    cur = cn.g.db.execute('select id, nombre from criterios')
+    criterios = [dict(id=row[0], nombre=row[1])for row in cur.fetchall()]
+    cn.g.db.close()
+    return json.dumps(criterios)
+
+
+def calificar_curso():
+    try:
+        if request.method == 'POST':
+            import pdb;pdb.set_trace()
+            user_token = request.form['token']
+            curso = request.form['curso']
+            calificaciones = request.form['califica']
+            if user_token is not None:
+                data = {}
+                return json.dumps(data)
+            else:
+                return jsonify(message='Error query')
+    except:
+        return jsonify(message='Error query')

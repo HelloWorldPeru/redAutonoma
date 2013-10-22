@@ -31,21 +31,20 @@
         //Globales
         var domain = 'http://0.0.0.0:5000/';
 
-
         //Elementos disparadoresd e evento
         var login = $('#logIn'),
-            profile = $('#Profile'),
             carreras = $('#Carreras'),
             turno = $('#Turnos'),
             actualizar = $('#Cursos'),
-            saber = $('#Saber');
+            calificar = $('#Califica');
         //Elementos contenedores
         var contentLogin = $('.content-logIn'),
             contentProfile = $('.content-Profile'),
             contentCarreras = $('.content-Carreras'),
             contentTurno = $('.content-Turnos'),
             contentactualizar = $('.content-Cursos'),
-            contentSaber = $('.content-Saber');
+            contentSaber = $('.content-Saber'),
+            contentCalificar = $('.content-calificar');
 
 
         function evtLogin(){
@@ -69,6 +68,7 @@
                         $('.Information').show();
                         evtProfile();
                         evtSaberCursoDelDia();
+                        evtCriterios();
                     }
                 }
             });
@@ -112,6 +112,20 @@
                         contentTurno.children('select').append('<option value='+value.id+'>'+value.nombre+'</option>');
                     });
                     //$.mobile.changePage("otherPage.html");
+                }
+            });
+        }
+        function evtCriterios(){
+            var url =  domain +'criterios';
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: url,
+                success: function(data){
+                    contentCalificar.children('ul').html('');
+                    $.each(data, function(id, value){
+                        contentCalificar.children('ul').append('<li><h4>'+value.nombre+'</h4><input data-id="'+value.id+'" type="number" min="0" max="100" value="50"/></li>');
+                    });
                 }
             });
         }
@@ -166,6 +180,37 @@
                         curso = data.curso;
                     contentSaber.children('ul').html('');
                     contentSaber.children('ul').append('<li>Profesor: ID:'+profesor+' | Curso: '+curso+'</li>');
+                    $('#idCurso').val(id_curso);
+                }
+            });
+        }
+
+        function evtCalificar(){
+            var token = $('#token').val(),
+                curso = $('#idCurso').val();
+
+            var inputs = $('.content-calificar input'),
+                calificaciones = [];
+            $.each(inputs, function(key, value){
+                calificaciones.push({
+                    'id':$(value).data('id'),
+                    'valor':$(value).val()
+                });
+            });
+            var data = {
+                    'token':token,
+                    'curso':curso,
+                    'califica':calificaciones
+                };
+            var url =  domain +'califica';
+            debugger;
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: url,
+                data:data,
+                success: function(data){
+                    debugger;
                 }
             });
         }
@@ -189,6 +234,11 @@
         actualizar.on('click',function(e){
             e.preventDefault();
             evtActualizarProfile();
+        });
+
+        calificar.on('click',function(e){
+            e.preventDefault();
+            evtCalificar();
         });
 
     }

@@ -25,8 +25,10 @@ app.add_url_rule('/login-ajax', view_func=phonegap.login_ajax, methods=['POST'])
 app.add_url_rule('/actualizar', view_func=phonegap.update_information, methods=['POST'])
 app.add_url_rule('/perfil', view_func=phonegap.get_current_user, methods=['POST'])
 app.add_url_rule('/carrera', view_func=phonegap.get_current_carreras)
+app.add_url_rule('/criterios', view_func=phonegap.get_criterios)
 app.add_url_rule('/turno', view_func=phonegap.get_current_turno)
 app.add_url_rule('/curso', view_func=phonegap.get_curso, methods=['POST'])
+app.add_url_rule('/califica', view_func=phonegap.calificar_curso, methods=['POST'])
 
 #Ejecutando servidor
 if __name__ == "__main__":
