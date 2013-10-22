@@ -1,4 +1,5 @@
 from flask import request,jsonify, json
+import datetime
 import connection as cn
 import resolve as rs
 
@@ -25,28 +26,31 @@ def update_information():
     return json.dumps(result)
 
 
-def get_current_user(user_token):
-    try:
-        if user_token is not None:
-            data = {}
-            cn.g.db = cn.connect_db()
-            cur = cn.g.db.execute('select id, username, carrera, turno, ciclo from usuario where token='+str(user_token))
-            usuario = [dict(id=row[0], nombre=row[1], carrera=row[2], turno=row[3], ciclo=row[4])for row in cur.fetchall()]
-            for user in usuario:
-                data.update({
-                    'id':user.get('id'),
-                    'username':user.get('nombre'),
-                    'carrera':rs.get_carrera(user.get('carrera')),
-                    'turno':rs.get_turno(user.get('turno')),
-                    'ciclo':user.get('ciclo')
-                })
+def get_current_user():
+    if request.method == 'POST':
+        try:
+            user_token = request.form['token']
+            if user_token is not None:
+                data = {}
+                cn.g.db = cn.connect_db()
+                cur = cn.g.db.execute('select id, username, carrera, turno, ciclo, seccion from usuario where token='+str(user_token))
+                usuario = [dict(id=row[0], nombre=row[1], carrera=row[2], turno=row[3], ciclo=row[4], seccion=row[5])for row in cur.fetchall()]
+                for user in usuario:
+                    data.update({
+                        'id':user.get('id'),
+                        'username':user.get('nombre'),
+                        'carrera':rs.get_carrera(user.get('carrera')),
+                        'turno':rs.get_turno(user.get('turno')),
+                        'ciclo':user.get('ciclo'),
+                        'seccion':user.get('seccion')
+                    })
 
-            cn.g.db.close()
-            return json.dumps(data)
-        else:
+                cn.g.db.close()
+                return json.dumps(data)
+            else:
+                return jsonify(message='Error query')
+        except:
             return jsonify(message='Error query')
-    except:
-        return jsonify(message='Error query')
 
 
 def get_current_carreras():
@@ -71,25 +75,26 @@ def get_current_turno():
         return jsonify(message='Error query')
 
 
-def get_curso(user_token):
+def get_curso():
     try:
-        if user_token is not None:
-            data = {}
-            cn.g.db = cn.connect_db()
-            cur = cn.g.db.execute('select id, nombre from curso where carrera=?, turno=?, ciclo=?, dia=?')
-            usuario = [dict(id=row[0], nombre=row[1], carrera=row[2], turno=row[3], ciclo=row[4])for row in cur.fetchall()]
-            for user in usuario:
-                data.update({
-                    'id':user.get('id'),
-                    'username':user.get('nombre'),
-                    'carrera':rs.get_carrera(user.get('carrera')),
-                    'turno':rs.get_turno(user.get('turno')),
-                    'ciclo':user.get('ciclo')
-                })
-
-            cn.g.db.close()
-            return json.dumps(data)
-        else:
-            return jsonify(message='Error query')
+        if request.method == 'POST':
+            user_token = request.form['token']
+            if user_token is not None:
+                data = {}
+                profile = rs.get_profile(user_token)
+                dia = datetime.datetime.today().weekday() + 1
+                cn.g.db = cn.connect_db()
+                cur = cn.g.db.execute("select c.id, c.nombre, p.nombre from curso c inner join profesor p on p.id=c.profesor where carrera="+profile.get('carrera')+" and turno="+profile.get('turno')+" and ciclo="+profile.get('ciclo')+" and dia="+str(dia)+" and seccion='"+profile.get('seccion')+"'")
+                usuario = [dict(id_curso=row[0], curso=row[1], profesor=row[2])for row in cur.fetchall()]
+                for user in usuario:
+                    data.update({
+                        'id':user.get('id_curso'),
+                        'curso':user.get('curso'),
+                        'profesor':user.get('profesor')
+                    })
+                cn.g.db.close()
+                return json.dumps(data)
+            else:
+                return jsonify(message='Error query')
     except:
         return jsonify(message='Error query')

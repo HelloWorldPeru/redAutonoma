@@ -38,7 +38,7 @@
             carreras = $('#Carreras'),
             turno = $('#Turnos'),
             actualizar = $('#Cursos'),
-            saler = $('#Saber');
+            saber = $('#Saber');
         //Elementos contenedores
         var contentLogin = $('.content-logIn'),
             contentProfile = $('.content-Profile'),
@@ -48,9 +48,7 @@
             contentSaber = $('.content-Saber');
 
 
-        //Eventos
-        login.on('click',function(e){
-            e.preventDefault();
+        function evtLogin(){
             var data = {
                 'username':$('#username').val(),
                 'password':$('#password').val()
@@ -69,20 +67,23 @@
                         $('.message').append(data.message);
                         $('#token').val(data.token);
                         $('.Information').show();
+                        evtProfile();
+                        evtSaberCursoDelDia();
                     }
                 }
             });
-        });
-
-
-        profile.on('click',function(e){
+        }
+        function evtProfile(){
             var id = $('#token').val();
             if(id != ''){
-                e.preventDefault();
-                var url =  domain +'perfil/'+id;
+                var data = {
+                    token:id
+                };
+                var url =  domain +'perfil';
                 $.ajax({
                     dataType: "json",
-                    type: "GET",
+                    type: "POST",
+                    data:data,
                     url: url,
 
                     success: function(data){
@@ -91,16 +92,15 @@
                         contentProfile.children('ul').append('<li>Ciclo: '+data.ciclo+'</li>');
                         contentProfile.children('ul').append('<li>Turno: ID:'+data.turno.id+' | Nombre: '+data.turno.nombre+'</li>');
                         contentProfile.children('ul').append('<li>'+data.username+'</li>');
+                        contentProfile.children('ul').append('<li>Seccion '+data.seccion+'</li>');
                         //$.mobile.changePage("otherPage.html");
                     }
                 });
             } else{
                 contentProfile.children('ul').html('Usuario no valido');
             }
-        });
-
-        turno.on('click',function(e){
-            e.preventDefault();
+        }
+        function evtTurnos(){
             var url =  domain +'turno';
             $.ajax({
                 dataType: "json",
@@ -114,10 +114,8 @@
                     //$.mobile.changePage("otherPage.html");
                 }
             });
-        });
-
-        carreras.on('click',function(e){
-            e.preventDefault();
+        }
+        function evtCarreras(){
             var url =  domain +'carrera';
             $.ajax({
                 dataType: "json",
@@ -131,9 +129,8 @@
                     //$.mobile.changePage("otherPage.html");
                 }
             });
-        });
-        actualizar.on('click',function(e){
-            e.preventDefault();
+        }
+        function evtActualizarProfile(){
             var token = $('#token').val();
             var data = {
                     'carrera':$("#ch-carrera").val(),
@@ -151,9 +148,48 @@
                     console.log(data.status);
                 }
             });
+        }
+        function evtSaberCursoDelDia(){
+            var token = $('#token').val();
+            var data = {
+                    'token':token
+                };
+            var url =  domain +'curso';
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: url,
+                data:data,
+                success: function(data){
+                    var id_curso = data.id,
+                        profesor = data.profesor,
+                        curso = data.curso;
+                    contentSaber.children('ul').html('');
+                    contentSaber.children('ul').append('<li>Profesor: ID:'+profesor+' | Curso: '+curso+'</li>');
+                }
+            });
+        }
+
+        //Eventos
+        login.on('click',function(e){
+            e.preventDefault();
+            evtLogin();
         });
 
 
+        turno.on('click',function(e){
+            e.preventDefault();
+            evtTurnos();
+        });
+
+        carreras.on('click',function(e){
+            e.preventDefault();
+            evtCarreras();
+        });
+        actualizar.on('click',function(e){
+            e.preventDefault();
+            evtActualizarProfile();
+        });
 
     }
 

@@ -23,10 +23,10 @@ app.add_url_rule('/dashboard/cursos-list', view_func=dashboard.cursos)
 #WebService (Phonegap)
 app.add_url_rule('/login-ajax', view_func=phonegap.login_ajax, methods=['POST'])
 app.add_url_rule('/actualizar', view_func=phonegap.update_information, methods=['POST'])
-app.add_url_rule('/perfil/<int:user_token>', view_func=phonegap.get_current_user)
+app.add_url_rule('/perfil', view_func=phonegap.get_current_user, methods=['POST'])
 app.add_url_rule('/carrera', view_func=phonegap.get_current_carreras)
 app.add_url_rule('/turno', view_func=phonegap.get_current_turno)
-app.add_url_rule('/curso/<int:user_token>', view_func=phonegap.get_curso)
+app.add_url_rule('/curso', view_func=phonegap.get_curso, methods=['POST'])
 
 #Ejecutando servidor
 if __name__ == "__main__":

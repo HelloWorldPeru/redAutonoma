@@ -86,7 +86,7 @@ with con:
 
     cur.execute("DROP TABLE IF EXISTS calificacion")
     cur.execute("CREATE TABLE calificacion("
-                "evaluacion INT"
+                "evaluacion INT,"
                 "id integer primary key autoincrement,"
                 "usuario TEXT,"
                 "criterio INTEGER,"
