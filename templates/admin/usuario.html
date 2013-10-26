@@ -1,0 +1,32 @@
+{% extends "template.html" %}
+
+{% block content %}
+    <h1>Usuarios</h1>
+    <br />
+    <a class="btn" href="/dashboard">Volver</a>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Carrera</th>
+            <th>Turno</th>
+            <th>Ciclo</th>
+            <th>Seccion</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in usuarios %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.carrera }}</td>
+            <td>{{ item.turno }}</td>
+            <td>{{ item.ciclo }}</td>
+            <td>{{ item.seccion }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+{% endblock %}

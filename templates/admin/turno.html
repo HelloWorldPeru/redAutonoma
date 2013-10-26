@@ -1,0 +1,25 @@
+{% extends "template.html" %}
+
+{% block content %}
+    <h1>Turnos</h1>
+    <br />
+    <a class="btn" href="/dashboard">Volver</a>
+    <br />
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in turnos %}
+        <tr>
+          <td>{{ item.id }}</td>
+          <td>{{ item.nombre }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+{% endblock %}

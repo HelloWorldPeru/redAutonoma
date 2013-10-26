@@ -1,13 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, json
 import connection as cn
 import resolve as rs
-from functools import wraps
 
-app = cn.app
 
-#APP Phonegap
-
-@app.route('/login-ajax', methods=['POST'])
 def login_ajax():
     error = None
     result = {}
@@ -15,7 +10,7 @@ def login_ajax():
         result = rs.check_login(request.form['username'], request.form['password'] )
     return json.dumps(result)
 
-@app.route('/actualizar', methods=['POST'])
+
 def update_information():
     error = None
     result = {}
@@ -29,7 +24,7 @@ def update_information():
             result = {'status':False}
     return json.dumps(result)
 
-@app.route('/perfil/<int:user_token>')
+
 def get_current_user(user_token):
     try:
         if user_token is not None:
@@ -54,7 +49,6 @@ def get_current_user(user_token):
         return jsonify(message='Error query')
 
 
-@app.route('/carrera')
 def get_current_carreras():
     try:
         cn.g.db = cn.connect_db()
@@ -66,7 +60,6 @@ def get_current_carreras():
         return jsonify(message='Error query')
 
 
-@app.route('/turno')
 def get_current_turno():
     try:
         cn.g.db = cn.connect_db()
@@ -78,7 +71,6 @@ def get_current_turno():
         return jsonify(message='Error query')
 
 
-@app.route('/curso/<int:user_token>')
 def get_curso(user_token):
     try:
         if user_token is not None:

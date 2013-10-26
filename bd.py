@@ -9,8 +9,8 @@ con = lite.connect('red.db')
 with con:
     cur = con.cursor()
 
-    cur.execute("DROP TABLE IF EXISTS criterio")
-    cur.execute("CREATE TABLE criterio("
+    cur.execute("DROP TABLE IF EXISTS criterios")
+    cur.execute("CREATE TABLE criterios("
                 "id integer primary key autoincrement,"
                 "nombre TEXT"
                 ")")
@@ -50,12 +50,14 @@ with con:
                 "turno INT,"
                 "ciclo INT,"
                 "profesor INT,"
+                "seccion TEXT,"
                 "dia INT,"
                 "FOREIGN KEY(carrera) REFERENCES carrera(id),"
                 "FOREIGN KEY(turno) REFERENCES turno(id),"
                 "FOREIGN KEY(profesor) REFERENCES profesor(id)"
                 ")")
-    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor, dia) VALUES('Derecho y constitucion',1,1,6,1,1)")
+    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('Derecho y constitucion',1,1,6,1,'A',1)")
+    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('Sistemas OPerativos',1,1,6,1,'B',1)")
 
     cur.execute("DROP TABLE IF EXISTS usuario")
     cur.execute("CREATE TABLE usuario("
@@ -65,13 +67,15 @@ with con:
                 "token TEXT,"
                 "carrera INT,"
                 "turno INT,"
-                "ciclo INT"
+                "ciclo INT,"
+                "seccion TEXT"
                 ")")
 
-    cur.execute("INSERT INTO usuario (username, password, token, carrera, turno, ciclo) VALUES('jonathancg90','123456','13233',1,1,6)")
+    cur.execute("INSERT INTO usuario (username, password, token, carrera, turno, ciclo, seccion) VALUES('jonathancg90','123456','13233',1,1,6,'A')")
+    cur.execute("INSERT INTO usuario (username, password, token, carrera, turno, ciclo, seccion) VALUES('tectime','654321','13233',1,1,6, 'B')")
 
     cur.execute("DROP TABLE IF EXISTS evaluacion")
-    cur.execute("CREATE TABLE criterios("
+    cur.execute("CREATE TABLE evaluacion("
                 "id integer primary key autoincrement,"
                 "fecha TEXT,"
                 "curso INT,"
