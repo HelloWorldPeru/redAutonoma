@@ -40,7 +40,8 @@ with con:
                 "id integer primary key autoincrement,"
                 "nombre TEXT"
                 ")")
-    cur.execute("INSERT INTO profesor (nombre) VALUES('Tectime')")
+    cur.execute("INSERT INTO profesor (nombre) VALUES('Sixto')")
+    cur.execute("INSERT INTO profesor (nombre) VALUES('Viejito')")
 
     cur.execute("DROP TABLE IF EXISTS curso")
     cur.execute("CREATE TABLE curso("
@@ -56,7 +57,7 @@ with con:
                 "FOREIGN KEY(turno) REFERENCES turno(id),"
                 "FOREIGN KEY(profesor) REFERENCES profesor(id)"
                 ")")
-    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('Derecho y constitucion',1,1,6,1,'A',1)")
+    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('Derecho y constitucion',1,1,6,2,'A',1)")
     cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('Sistemas OPerativos',1,1,6,1,'B',1)")
 
     cur.execute("DROP TABLE IF EXISTS usuario")
@@ -72,17 +73,26 @@ with con:
                 ")")
 
     cur.execute("INSERT INTO usuario (username, password, token, carrera, turno, ciclo, seccion) VALUES('jonathancg90','123456','13233',1,1,6,'A')")
-    cur.execute("INSERT INTO usuario (username, password, token, carrera, turno, ciclo, seccion) VALUES('tectime','654321','13233',1,1,6, 'B')")
+    cur.execute("INSERT INTO usuario (username, password, token, carrera, turno, ciclo, seccion) VALUES('tectime','654321','14433',1,1,6, 'B')")
 
     cur.execute("DROP TABLE IF EXISTS evaluacion")
     cur.execute("CREATE TABLE evaluacion("
                 "id integer primary key autoincrement,"
-                "fecha TEXT,"
+                "fecha DATE,"
+                "Total INT,"
                 "curso INT,"
+                "FOREIGN KEY(curso) REFERENCES curso(id)"
+                ")")
+
+    cur.execute("DROP TABLE IF EXISTS calificacion")
+    cur.execute("CREATE TABLE calificacion("
+                "evaluacion INT"
+                "id integer primary key autoincrement,"
+                "usuario TEXT,"
                 "criterio INTEGER,"
                 "valor INT,"
                 "FOREIGN KEY(criterio) REFERENCES criterio(id),"
-                "FOREIGN KEY(curso) REFERENCES curso(id)"
+                "FOREIGN KEY(usuario) REFERENCES usuario(id)"
                 ")")
 
     # cur.executemany("INSERT INTO usuario(username, password, token, carrera, turno, ciclo) VALUES(?,?,?,?,?,?)", usuarios)

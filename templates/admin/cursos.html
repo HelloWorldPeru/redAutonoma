@@ -1,31 +1,34 @@
 {% extends "template.html" %}
 
 {% block content %}
-    <h1>Usuarios</h1>
+    <h1>Turnos</h1>
     <br />
     <a class="btn" href="/dashboard">Volver</a>
+    <br />
     <table class="table table-striped">
       <thead>
         <tr>
             <th>ID</th>
-            <th>Username</th>
+            <th>Name</th>
             <th>Carrera</th>
             <th>Turno</th>
             <th>Ciclo</th>
+            <th>Profesor</th>
             <th>Seccion</th>
-            <th>Opciones</th>
+            <th>Dia</th>
         </tr>
       </thead>
       <tbody>
-      {% for item in usuarios %}
+      {% for item in cursos %}
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.nombre }}</td>
             <td>{{ item.carrera }}</td>
             <td>{{ item.turno }}</td>
             <td>{{ item.ciclo }}</td>
+            <td>{{ item.profesor }}</td>
             <td>{{ item.seccion }}</td>
-            <td><a href="/dashboard/usuarios-detail/{{ item.token }}">Ver detalles</a></td>
+            <td>{{ item.dia }}</td>
         </tr>
       {% endfor %}
       </tbody>

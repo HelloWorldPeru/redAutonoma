@@ -49,3 +49,19 @@ def check_login(username, password):
             }
     except:
         return {}
+
+
+def get_profile(token_user):
+    try:
+        cn.g.db = cn.connect_db()
+        cur = cn.g.db.execute('select carrera, turno, ciclo, seccion from usuario where token='+str(token_user))
+        usuario = [dict(carrera=row[0], turno=row[1], ciclo=row[2], seccion=row[3])for row in cur.fetchall()]
+        cn.g.db.close()
+        return {
+            'carrera':str(usuario[0].get('carrera')),
+            'turno':str(usuario[0].get('turno')),
+            'ciclo':str(usuario[0].get('ciclo')),
+            'seccion':str(usuario[0].get('seccion'))
+        }
+    except:
+        return {}

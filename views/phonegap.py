@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, json
+from flask import request,jsonify, json
 import connection as cn
 import resolve as rs
 

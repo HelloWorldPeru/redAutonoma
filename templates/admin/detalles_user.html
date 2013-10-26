@@ -1,0 +1,27 @@
+{% extends "template.html" %}
+
+{% block content %}
+    <h1>Detalles</h1>
+    <br />
+    <a class="btn" href="/dashboard/usuarios-list">Volver</a>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+            <th>Dia</th>
+            <th>Curso</th>
+            <th>Profesor</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in detalles %}
+        <tr>
+            <td>{{ item.dia }}</td>
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.profesor }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+{% endblock %}

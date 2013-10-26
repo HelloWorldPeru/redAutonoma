@@ -17,6 +17,8 @@ app.add_url_rule('/dashboard/criterios-list', view_func=dashboard.criterios)
 app.add_url_rule('/dashboard/profesor-list', view_func=dashboard.profesores)
 app.add_url_rule('/dashboard/turno-list', view_func=dashboard.turnos)
 app.add_url_rule('/dashboard/usuarios-list', view_func=dashboard.usuarios)
+app.add_url_rule('/dashboard/usuarios-detail/<int:token_user>', view_func=dashboard.detale_usuario)
+app.add_url_rule('/dashboard/cursos-list', view_func=dashboard.cursos)
 
 #WebService (Phonegap)
 app.add_url_rule('/login-ajax', view_func=phonegap.login_ajax, methods=['POST'])
