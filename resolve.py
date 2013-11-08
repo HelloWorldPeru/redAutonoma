@@ -51,6 +51,28 @@ def check_login(username, password):
         return {}
 
 
+def check_token(token):
+    try:
+        cn.g.db = cn.connect_db()
+        cur = cn.g.db.execute("select token from usuario where token='"+str(token)+"'")
+        token = [dict(token=row[0])for row in cur.fetchall()]
+        cn.g.db.close()
+        if len(token) > 0:
+            return {
+                'status': True,
+                'message': 'Welcome',
+                'token': token[0].get('token')
+
+            }
+        else:
+            return {
+                'status': False,
+                'message': 'Login incorrect'
+            }
+    except:
+        return {}
+
+
 def get_profile(token_user):
     try:
         cn.g.db = cn.connect_db()

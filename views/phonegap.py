@@ -57,6 +57,14 @@ def login_ajax():
         result = rs.check_login(request.form['username'], request.form['password'] )
     return json.dumps(result)
 
+@crossdomain(origin='*')
+def login_token():
+    error = None
+    result = {}
+    if request.method == 'POST':
+        result = rs.check_token(request.form['token'])
+    return json.dumps(result)
+
 
 @crossdomain(origin='*')
 def update_information():
