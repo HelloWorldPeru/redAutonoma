@@ -62,8 +62,8 @@ def cursos():
 @login_required
 def usuarios():
     cn.g.db = cn.connect_db()
-    cur = cn.g.db.execute('select u.id, u.username,c. nombre,t. nombre,u. ciclo,u. seccion, u.token from usuario u inner join carrera c on c.id = u.carrera inner join turno t on t.id = u.turno')
-    usuarios = [dict(id=row[0], nombre=row[1], carrera=row[2], turno=row[3], ciclo=row[4], seccion=row[5], token=row[6])for row in cur.fetchall()]
+    cur = cn.g.db.execute('select u.id, u.username,c. nombre,t. nombre,u. ciclo,u. seccion, u.token, u.nombre from usuario u inner join carrera c on c.id = u.carrera inner join turno t on t.id = u.turno')
+    usuarios = [dict(id=row[0], username=row[1], carrera=row[2], turno=row[3], ciclo=row[4], seccion=row[5], token=row[6], nombre=row[7])for row in cur.fetchall()]
     cn.g.db.close()
     return render_template('admin/usuario.html', usuarios=usuarios)
 

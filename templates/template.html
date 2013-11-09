@@ -93,6 +93,8 @@
                         contentProfile.children('ul').append('<li>Turno: ID:'+data.turno.id+' | Nombre: '+data.turno.nombre+'</li>');
                         contentProfile.children('ul').append('<li>'+data.username+'</li>');
                         contentProfile.children('ul').append('<li>Seccion '+data.seccion+'</li>');
+                        debugger;
+                        $('#user-name').val(data.nombre);
                         //$.mobile.changePage("otherPage.html");
                     }
                 });
@@ -146,11 +148,12 @@
         function evtActualizarProfile(){
             var token = $('#token').val();
             var data = {
-                    'carrera':$("#ch-carrera").val(),
-                    'turno':$("#ch-turnos").val(),
-                    'ciclo':$('#ch-ciclo').val(),
-                    'token':token
-                };
+                'nombre': $('#user-name').val(),
+                'carrera':$("#ch-carrera").val(),
+                'turno':$("#ch-turnos").val(),
+                'ciclo':$('#ch-ciclo').val(),
+                'token':token
+            };
             var url =  domain +'actualizar';
             $.ajax({
                 dataType: "json",

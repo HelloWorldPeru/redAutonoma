@@ -9,6 +9,7 @@
         <tr>
             <th>ID</th>
             <th>Username</th>
+            <th>Nombre</th>
             <th>Carrera</th>
             <th>Turno</th>
             <th>Ciclo</th>
@@ -20,6 +21,7 @@
       {% for item in usuarios %}
         <tr>
             <td>{{ item.id }}</td>
+            <td>{{ item.username }}</td>
             <td>{{ item.nombre }}</td>
             <td>{{ item.carrera }}</td>
             <td>{{ item.turno }}</td>

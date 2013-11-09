@@ -73,7 +73,7 @@ def update_information():
     if request.method == 'POST':
         try:
             cn.g.db = cn.connect_db()
-            cn.g.db.execute("update usuario set carrera="+str(request.form['carrera'])+",turno="+str(request.form['turno'])+",ciclo="+str(request.form['ciclo'])+" where token='"+str(request.form['token'])+"'")
+            cn.g.db.execute("update usuario set nombre='"+str(request.form['nombre'])+"' carrera="+str(request.form['carrera'])+",turno="+str(request.form['turno'])+",ciclo="+str(request.form['ciclo'])+" where token='"+str(request.form['token'])+"'")
             cn.g.db.commit()
             result = {'status':True}
         except:
@@ -89,8 +89,8 @@ def get_current_user():
             if user_token is not None:
                 data = {}
                 cn.g.db = cn.connect_db()
-                cur = cn.g.db.execute('select id, username, carrera, turno, ciclo, seccion from usuario where token='+str(user_token))
-                usuario = [dict(id=row[0], nombre=row[1], carrera=row[2], turno=row[3], ciclo=row[4], seccion=row[5])for row in cur.fetchall()]
+                cur = cn.g.db.execute('select id, username, carrera, turno, ciclo, seccion, nombre from usuario where token='+str(user_token))
+                usuario = [dict(id=row[0], username=row[1], carrera=row[2], turno=row[3], ciclo=row[4], seccion=row[5], nombre=row[6])for row in cur.fetchall()]
                 for user in usuario:
                     data.update({
                         'id':user.get('id'),
@@ -98,7 +98,8 @@ def get_current_user():
                         'carrera':rs.get_carrera(user.get('carrera')),
                         'turno':rs.get_turno(user.get('turno')),
                         'ciclo':user.get('ciclo'),
-                        'seccion':user.get('seccion')
+                        'seccion':user.get('seccion'),
+                        'nombre':user.get('nombre')
                     })
 
                 cn.g.db.close()
