@@ -64,6 +64,7 @@ with con:
     cur.execute("CREATE TABLE usuario("
                 "id integer primary key autoincrement,"
                 "username TEXT,"
+                "nombre TEXT,"
                 "password TEXT,"
                 "token TEXT,"
                 "carrera INT,"
@@ -72,8 +73,8 @@ with con:
                 "seccion TEXT"
                 ")")
 
-    cur.execute("INSERT INTO usuario (username, password, token, carrera, turno, ciclo, seccion) VALUES('jonathancg90','123456','13233',1,1,6,'A')")
-    cur.execute("INSERT INTO usuario (username, password, token, carrera, turno, ciclo, seccion) VALUES('tectime','654321','14433',1,1,6, 'B')")
+    cur.execute("INSERT INTO usuario (username, nombre, password, token, carrera, turno, ciclo, seccion) VALUES('jonathancg90', 'Jonathan', '123456','13233',1,1,6,'A')")
+    cur.execute("INSERT INTO usuario (username, nombre, password, token, carrera, turno, ciclo, seccion) VALUES('tectime', 'John', '654321','14433',1,1,6, 'B')")
 
     cur.execute("DROP TABLE IF EXISTS evaluacion")
     cur.execute("CREATE TABLE evaluacion("
