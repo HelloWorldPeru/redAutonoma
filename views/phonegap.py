@@ -73,7 +73,7 @@ def update_information():
     if request.method == 'POST':
         try:
             cn.g.db = cn.connect_db()
-            cn.g.db.execute("update usuario set nombre='"+str(request.form['nombre'])+"' carrera="+str(request.form['carrera'])+",turno="+str(request.form['turno'])+",ciclo="+str(request.form['ciclo'])+" where token='"+str(request.form['token'])+"'")
+            cn.g.db.execute("update usuario set nombre='"+str(request.form['nombre'])+"', carrera="+str(request.form['carrera'])+",turno="+str(request.form['turno'])+",ciclo="+str(request.form['ciclo'])+", seccion='"+str(request.form['seccion'])+"' where token='"+str(request.form['token'])+"'")
             cn.g.db.commit()
             result = {'status':True}
         except:
