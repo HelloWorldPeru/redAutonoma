@@ -137,3 +137,9 @@ def get_calificacion(usuario,evaluacion):
         return None
     except:
         return None
+
+def get_puntaje(evaluacion):
+    cn.g.db = cn.connect_db()
+    cur = cn.g.db.execute("select SUM(valor)/COUNT(*) as resultado from calificacion where evaluacion="+str(evaluacion))
+    puntaje = [dict(puntos=row[0])for row in cur.fetchall()]
+    return puntaje[0].get('puntos')

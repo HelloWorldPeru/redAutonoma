@@ -192,12 +192,41 @@ def calificar_curso():
                     option = 'SAVE'
 
                 for calificacion in calificaciones:
-                    rs.save_calificacion(option, profile.get('id'),evaluation, calificacion.get('id'),calificacion.get('valor'))
+                    rs.save_calificacion(option, profile.get('id'), evaluation, calificacion.get('id'),calificacion.get('valor'))
+                puntaje = rs.get_puntaje(evaluation)
+
                 data = {
-                    'status':200
+                    'status': 'OK',
+                    'puntaje': puntaje
                 }
                 return json.dumps(data)
             else:
-                return jsonify(message='Error query')
+                return jsonify(status='Fail')
     except:
-        return jsonify(message='Error query')
+        return jsonify(status='Fail')
+
+
+@crossdomain(origin='*')
+def get_puntaje():
+    try:
+        if request.method == 'POST':
+            user_token = request.form['token']
+            if user_token is not None:
+                profile = rs.get_profile(user_token)
+                user_id = profile.get('id')
+                cn.g.db = cn.connect_db()
+                cur = cn.g.db.execute('select evaluacion from calificacion where usuario='+user_id)
+                evaluacion = [dict(eval=row[0])for row in cur.fetchall()]
+                evaluacion = evaluacion[0].get('eval')
+                cn.g.db.close()
+
+                puntaje = rs.get_puntaje(evaluacion)
+                data = {
+                    'status': 'OK',
+                    'puntaje': puntaje
+                }
+                return data
+            else:
+                jsonify(status='Fail')
+    except:
+        return jsonify(status='Fail')
