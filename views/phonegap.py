@@ -152,12 +152,13 @@ def get_curso():
                         'curso':user.get('curso'),
                         'profesor':user.get('profesor')
                     })
+                data.update({'state':'OK'})
                 cn.g.db.close()
                 return json.dumps(data)
             else:
-                return jsonify(message='Error query')
+                return jsonify(state='FAIL')
     except:
-        return jsonify(message='Error query')
+        return jsonify(state='FAIL')
 
 
 @crossdomain(origin='*')

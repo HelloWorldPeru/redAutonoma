@@ -40,8 +40,13 @@ with con:
                 "id integer primary key autoincrement,"
                 "nombre TEXT"
                 ")")
-    cur.execute("INSERT INTO profesor (nombre) VALUES('Sixto')")
-    cur.execute("INSERT INTO profesor (nombre) VALUES('Viejito')")
+    cur.execute("INSERT INTO profesor (nombre) VALUES('SIXTO CORDOVA CASTRO')")
+    cur.execute("INSERT INTO profesor (nombre) VALUES('CARLOS RUBEN GUERRERO MONCADA')")
+    cur.execute("INSERT INTO profesor (nombre) VALUES('LELLY VALEZZA BERMUDEZ TAPIA')")
+    cur.execute("INSERT INTO profesor (nombre) VALUES('SEGUNDO ZOILO VASQUEZ RUIZ')")
+    cur.execute("INSERT INTO profesor (nombre) VALUES('IVAN CRISPIN SANCHEZ')")
+
+    cur.execute("INSERT INTO profesor (nombre) VALUES('Profesor Jirafales')")
 
     cur.execute("DROP TABLE IF EXISTS curso")
     cur.execute("CREATE TABLE curso("
@@ -57,7 +62,15 @@ with con:
                 "FOREIGN KEY(turno) REFERENCES turno(id),"
                 "FOREIGN KEY(profesor) REFERENCES profesor(id)"
                 ")")
-    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('Derecho y constitucion',1,1,6,2,'A',1)")
+    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('SISTEMAS OPERATIVOS',1,1,6,1,'A',1)")
+    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('MODELAMIENTO Y SIMULACION',1,1,6,2,'A',2)")
+    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('CONSTITUCION Y DERECHOS HUMANOS',1,1,6,3,'A',3)")
+    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('INGENIERIA EMPRESARIAL',1,1,6,4,'A',4)")
+    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('INGENIERIA DE LA INFORMACION',1,1,6,5,'A',5)")
+
+    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('INGENIERIA DE LOS SABADOS',1,1,6,6,'A',6)")
+    cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('INGENIERIA DE LOS DOMINGOS',1,1,6,6,'A',7)")
+
     cur.execute("INSERT INTO curso (nombre, carrera, turno, ciclo, profesor,seccion, dia) VALUES('Sistemas OPerativos',1,1,6,1,'B',1)")
 
     cur.execute("DROP TABLE IF EXISTS usuario")
